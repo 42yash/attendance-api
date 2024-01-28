@@ -9,6 +9,8 @@
 }
 ```
 
+
+## /login
 ```json
 {
     "uname": "JohnDoe",
