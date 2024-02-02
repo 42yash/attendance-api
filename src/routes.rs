@@ -37,7 +37,7 @@ pub async fn login(user: Json<Login>, db_pool: &State<PgPool>) -> Result<Json<Va
     Ok(Json(response))
 }
 
-// #[get("/")]
-// pub async fn index(db_pool: &State<PgPool>) -> String {
-//     format!("Hello, world!")
-// }
+#[get("/")]
+pub async fn index(db_pool: &State<PgPool>) -> String {
+    format!("Hello, world!")
+}
