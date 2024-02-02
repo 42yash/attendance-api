@@ -38,6 +38,6 @@ pub async fn login(user: Json<Login>, db_pool: &State<PgPool>) -> Result<Json<Va
 }
 
 #[get("/")]
-pub async fn index(db_pool: &State<PgPool>) -> String {
+pub async fn index() -> String {
     format!("Hello, world!")
 }
