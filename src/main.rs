@@ -1,4 +1,6 @@
+mod auth;
 mod db;
+mod middleware;
 mod models;
 mod routes;
 
@@ -7,7 +9,7 @@ extern crate rocket;
 
 use rocket::http::Method;
 use rocket_cors::{AllowedHeaders, AllowedOrigins, CorsOptions};
-use routes::{index, login, register};
+use routes::*;
 use sqlx::postgres::PgPool;
 use std::env;
 
@@ -44,8 +46,16 @@ async fn rocket() -> _ {
     .to_cors()
     .expect("CORS configuration failed");
 
-    rocket::build()
-        .attach(cors)
-        .manage(db_pool)
-        .mount("/", routes![index, register, login])
+    rocket::build().attach(cors).manage(db_pool).mount(
+        "/",
+        routes![
+            index,
+            register,
+            login,
+            admin_dashboard,
+            teacher_dashboard,
+            student_dashboard,
+            ipm_dashboard
+        ],
+    )
 }

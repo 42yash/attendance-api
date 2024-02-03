@@ -6,6 +6,14 @@ pub struct Login {
     pub pword: String,
 }
 
+#[derive(Clone, Deserialize, Debug)]
+enum Role {
+    Admin,
+    Student,
+    Teacher,
+    Ipm,
+}
+
 #[derive(Clone, Deserialize)]
 pub struct NewUser {
     pub uname: String,
@@ -19,4 +27,10 @@ pub struct User {
     pub uname: String,
     pub pword: String,
     pub utype: String,
+}
+
+impl User {
+    pub fn has_role(&self, required_role: &str) -> bool {
+        self.utype == required_role
+    }
 }
