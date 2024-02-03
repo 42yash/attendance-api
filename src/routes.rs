@@ -1,5 +1,5 @@
 use rocket::serde::json::{json, Json, Value};
-use rocket::{response, State};
+use rocket::State;
 use sqlx::postgres::PgPool;
 
 use crate::{db, models::*};
