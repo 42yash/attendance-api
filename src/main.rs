@@ -5,6 +5,8 @@ mod routes;
 #[macro_use]
 extern crate rocket;
 
+use rocket::http::Method;
+use rocket_cors::{AllowedHeaders, AllowedOrigins, CorsOptions};
 use routes::{index, login, register};
 use sqlx::postgres::PgPool;
 use std::env;
@@ -22,7 +24,28 @@ async fn rocket() -> _ {
         .await
         .expect("Failed to create users table");
 
+    let allowed_origins = AllowedOrigins::some_exact(&["http://localhost:3000"]);
+
+    let cors = CorsOptions {
+        allowed_origins,
+        allowed_methods: vec![Method::Get, Method::Post]
+            .into_iter()
+            .map(From::from)
+            .collect(),
+        allowed_headers: AllowedHeaders::some(&[
+            "Authorization",
+            "Accept",
+            "Access-Control-Allow-Origin",
+            "Content-Type",
+        ]),
+        allow_credentials: true,
+        ..Default::default()
+    }
+    .to_cors()
+    .expect("CORS configuration failed");
+
     rocket::build()
+        .attach(cors)
         .manage(db_pool)
         .mount("/", routes![index, register, login])
 }

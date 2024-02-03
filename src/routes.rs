@@ -1,5 +1,5 @@
 use rocket::serde::json::{json, Json, Value};
-use rocket::State;
+use rocket::{response, State};
 use sqlx::postgres::PgPool;
 
 use crate::{db, models::*};
@@ -25,14 +25,17 @@ pub async fn login(user: Json<Login>, db_pool: &State<PgPool>) -> Result<Json<Va
         .await
         .map_err(|e| e.to_string())?;
 
-    if user_from_db.is_none() || user_from_db.unwrap().pword != user.pword {
-        return Err("Invalid username or password".into());
-    }
-
-    let response = json!({
-        "success": true,
-        "message": format!("Successfully logged in user {}", user.uname)
-    });
+    let response = if user_from_db.is_none() || user_from_db.unwrap().pword != user.pword {
+        json!({
+            "success": false,
+            "message": "Invalid username or password"
+        })
+    } else {
+        json!({
+            "success": true,
+            "message": format!("Successfully logged in user {}", user.uname)
+        })
+    };
 
     Ok(Json(response))
 }
