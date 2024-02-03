@@ -1,17 +1,15 @@
-mod auth;
-mod db;
-mod middleware;
-mod models;
-mod routes;
-
 #[macro_use]
 extern crate rocket;
 
+mod db;
+mod http;
+
+use http::routes::*;
+
 use rocket::http::Method;
 use rocket_cors::{AllowedHeaders, AllowedOrigins, CorsOptions};
-use routes::*;
 use sqlx::postgres::PgPool;
-use std::env;
+use std::env; // Import the missing index struct or variant
 
 #[launch]
 async fn rocket() -> _ {
@@ -22,7 +20,7 @@ async fn rocket() -> _ {
         .expect("Failed to create DB pool");
 
     // Call the function to create the users table
-    db::create_users_table(&db_pool)
+    db::crud::create_users_table(&db_pool)
         .await
         .expect("Failed to create users table");
 

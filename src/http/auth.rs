@@ -12,7 +12,7 @@ use serde::{Deserialize, Serialize};
 const SECRET_KEY: &[u8] = b"your_secret_key";
 
 #[derive(Debug, Serialize, Deserialize)]
-struct Claims {
+pub struct Claims {
     sub: String,   // Subject (Username)
     exp: usize,    // Expiration time
     user_id: i32,  // User ID from the User struct

@@ -4,7 +4,7 @@ use rocket::http::Status;
 use rocket::outcome::Outcome;
 use rocket::request::{self, FromRequest, Request};
 
-use crate::models::User;
+use crate::db::models::User;
 
 #[derive(Debug)]
 pub struct Admin;

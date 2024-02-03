@@ -1,7 +1,7 @@
 use sqlx::postgres::PgPool;
 use sqlx::Result;
 
-use crate::models::*;
+use crate::db::models::*;
 
 pub async fn create_users_table(pool: &PgPool) -> Result<()> {
     sqlx::query(
